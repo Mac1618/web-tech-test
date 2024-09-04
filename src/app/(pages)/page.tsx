@@ -1,14 +1,12 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 // context
 import { useMockupRecords } from '@/context/mockup-context';
-import { MouseEventHandler, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-	const router = useRouter();
 	const { records, addMockup } = useMockupRecords();
 	const [loading, setLoading] = useState(false);
 
@@ -16,6 +14,29 @@ export default function Home() {
 		const mockup = records.length + 1;
 		addMockup(mockup);
 	};
+	const [footer, setFooter] = useState([]);
+
+	useEffect(() => {
+		const getFooter = async () => {
+			// save new record to database
+
+			const response = await fetch(`${process.env.NEXT_PUBLIC_DB_HOST}`, {
+				method: 'GET',
+				headers: {
+					'apikey': `${process.env.NEXT_PUBLIC_DB_API_KEY}`,
+					'Content-Type': 'application/json',
+				},
+			});
+
+			const data = await response.json();
+
+			// convert object to array
+			const detailsArray: any = Object.values(data[0].details);
+			setFooter(detailsArray);
+		};
+
+		getFooter();
+	}, []);
 
 	return (
 		<>
@@ -60,6 +81,32 @@ export default function Home() {
 					))}
 				</div>
 			</main>
+
+			{/* footer */}
+			<footer className="footer">
+				<div className="grid-footer">
+					{footer.map((title, i) => {
+						const [smp] = Object.keys(title);
+						const items = Object.values(title)[0];
+						return (
+							<ul key={i}>
+								<li className="title">{smp}</li>
+
+								{Object.values(title).map((text: any, i) => {
+									const txt: any = Object.values(text)[i];
+									const [t] = Object.keys(txt);
+									return (
+										<li key={i} className="description">
+											{t}
+										</li>
+									);
+								})}
+								<li className="price">view more</li>
+							</ul>
+						);
+					})}
+				</div>
+			</footer>
 		</>
 	);
 }
