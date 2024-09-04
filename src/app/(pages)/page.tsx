@@ -1,12 +1,16 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // context
 import { useMockupRecords } from '@/context/mockup-context';
+import { MouseEventHandler, useState } from 'react';
 
 export default function Home() {
+	const router = useRouter();
 	const { records, addMockup } = useMockupRecords();
+	const [loading, setLoading] = useState(false);
 
 	const handleAddMockup = () => {
 		const mockup = records.length + 1;
@@ -16,21 +20,26 @@ export default function Home() {
 	return (
 		<>
 			{/* Task 2 */}
-			<Link
-				onClick={handleAddMockup}
-				href={{
-					pathname: `/${records.length + 1}`,
-					query: {
-						id: `${records.length + 1}`,
-						title: 'Amber Sea',
-						description: 'Lorem ipsum dolor sit amet.',
-						price: '$100,000',
-					},
-				}}
-				className="btn-1"
-			>
-				ADD BLOCK
-			</Link>
+
+			{loading ? (
+				<button className="btn-1">loading...</button>
+			) : (
+				<Link
+					onClick={handleAddMockup}
+					href={{
+						pathname: `/${records.length + 1}`,
+						query: {
+							id: `${records.length + 1}`,
+							title: 'Amber Sea',
+							description: 'Lorem ipsum dolor sit amet.',
+							price: '$100,000',
+						},
+					}}
+					className="btn-1"
+				>
+					ADD BLOCK
+				</Link>
+			)}
 
 			{/* Task 1 */}
 			<main className="main-container">

@@ -2,7 +2,7 @@
 import { createContext, useContext, useState } from 'react';
 
 // Define the structure for mockup records
-export interface MockupRecord {
+interface MockupRecord {
 	id: string;
 	title: string;
 	description: string;
@@ -17,6 +17,7 @@ interface MockupRecordsContextType {
 export const MockupRecordsContext = createContext<MockupRecordsContextType | undefined>(undefined);
 
 export const MockupRecordsProvider = ({ children }: { children: React.ReactNode }) => {
+	const [isProcessing, setIsProcessing] = useState(false);
 	const [records, setRecords] = useState<MockupRecord[]>([]);
 
 	// Function to add a new mockup record
@@ -32,10 +33,19 @@ export const MockupRecordsProvider = ({ children }: { children: React.ReactNode 
 			price: '$100,000',
 		};
 
-		// Update the state with the new mockup added
-		setRecords((prevRecords) => [...prevRecords, mockup]);
-	};
+		// wait for isProcessing to become true
+		if (isProcessing) {
+			return;
+		}
 
+		setIsProcessing(true);
+
+		// Update the state with the new mockup added
+		setTimeout(() => {
+			setRecords((prevRecords) => [...prevRecords, mockup]);
+			setIsProcessing(false);
+		}, 5000);
+	};
 
 	return (
 		<MockupRecordsContext.Provider value={{ records, addMockup }}>

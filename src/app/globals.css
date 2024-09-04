@@ -58,18 +58,6 @@
 	height: 100%;
 }
 
-/* Tablet Responsive */
-/* @media (min-width: 768px) {
-	.main-container {
-		padding: 40px 32px;
-	}
-
-	.grid {
-		column-gap: 40px;
-		row-gap: 32px;
-	}
-} */
-
 /* Laptop and Desktop Responsive */
 @media (min-width: 1440px) {
 	.main-container {
@@ -82,7 +70,7 @@
 	}
 }
 
-/* btn responsiveness */
+/* BLOCK btn mobile and tablet responsiveness */
 .btn-1 {
 	display: inline-block;
 	text-decoration: none;
@@ -106,6 +94,7 @@
 	background-color: #f39a52;
 }
 
+/* BLOCK btn macbook pro responsive */
 @media (min-width: 1024px) {
 	.btn-1 {
 		width: 332px;
@@ -127,6 +116,7 @@
 	}
 }
 
+/* BLOCK btn desktop responsive */
 @media (min-width: 1920px) {
 	.btn-1 {
 		width: 332px;
